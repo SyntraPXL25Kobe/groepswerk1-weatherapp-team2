@@ -8,9 +8,15 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="bg-[image:var(--surfer-gradient)] text-gray-800 min-h-screen">
-    <div class="max-w-3xl mx-auto p-6 space-y-6 ">
+    <div class="max-w-3xl mx-auto p-6 space-y-6">
       <header class="flex items-center justify-between">
         <a class="text-sm text-blue-600" href="/">&lt; BACK</a>
+        <select name="userType" id="userType">
+          <option value="Home">--Select a type--</option>
+          <option value="vampire">Vampire</option>
+          <option value="guardian">Guardian</option>
+          <option value="surfer" selected>Surfer</option>
+        </select>
       </header>
       <section class="bg-[var(--bg-info)] rounded-lg shadow p-4 space-y-4">
         <h2 class="text-3xl font-bold">Surfer waves</h2>
