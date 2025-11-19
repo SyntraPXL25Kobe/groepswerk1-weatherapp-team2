@@ -5,10 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Iluminati Weatherapp</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="/app.js"></script>
+    <link rel="stylesheet" href="/styles.css"/>
   </head>
-  <body>
-   
+  <body class="bg-[image:var(--home-gradient)] text-gray-800 min-h-screen">
+    <div class="max-w-3xl mx-auto p-6 space-y-6 ">
+      <header class="flex items-center justify-between">
+        <a class="text-sm text-blue-600" href="/">&lt; BACK</a>
+        <select name="userType" id="userType">
+          <option value="Home">--Select a type--</option>
+          <option value="vampire">Vampire</option>
+          <option value="guardian">Guardian</option>
+          <option value="surfer">Surfer</option>
+        </select>
+      </header>
+      <section class="bg-[var(--bg-info)] rounded-lg shadow p-4 space-y-4">
+        <h2 class="text-3xl font-bold">Iluminati Weatherapp</h2>
+
+        <input
+          type="text"
+          placeholder="Search"
+          class="w-full border border-gray-300 rounded px-3 py-2"
+        />
+
+        <h3 class="font-semibold text-xl">Favorites</h3>
+      </section>
+
+      <footer class="text-xs text-gray-500">//footer</footer>
+    </div>
   </body>
-  <script src="app.js"></script>
+  <script src="/app.js"></script>
 </html>

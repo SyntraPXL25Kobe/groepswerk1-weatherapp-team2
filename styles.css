@@ -2,13 +2,14 @@
     --primary-color: ;
     --secondary-color: ;
     
-    --vampire-gradient: linear-gradient(0deg,rgba(62, 7, 3, 1) 0%, rgba(140, 16, 7, 1) 75%);;;
-    --guardian-gradient: linear-gradient(0deg,rgba(85, 107, 47, 1) 0%, rgba(198, 216, 112, 1) 100%);;
+    --home-gradient: linear-gradient(0deg,rgba(84, 8, 99, 1) 0%, rgba(255, 211, 213, 1) 100%);
+    --vampire-gradient: linear-gradient(0deg,rgba(61, 0, 0, 1) 0%, rgba(255, 0, 0, 1) 100%);
+    --guardian-gradient: linear-gradient(0deg,rgba(85, 107, 47, 1) 0%, rgba(198, 216, 112, 1) 100%);
     --surfer-gradient: linear-gradient(0deg,rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
     --bg-info: hsla(0, 0%, 100%, 0.3); 
 
-    --primary-text: ;
-    --secondary-text: ;
+    --primary-text: black;
+    --secondary-text: white;
 
     --h1: ; 
     --h2: ;
