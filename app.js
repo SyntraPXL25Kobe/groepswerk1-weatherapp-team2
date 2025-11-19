@@ -2,7 +2,6 @@ const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 const apiKey = "38d41c5560fd9cdbd9cd0686d13a47b5";
 const defaultLocation = {
   name: "Genk",
-  country: "be",
 };
 
 // We roepen init pas aan als de pagina 'klaar' is met laden
@@ -24,7 +23,7 @@ function init() {
   setupSearch();
 
   // 3. Weer ophalen (LET OP: aanhalingstekens om de stad!)
-  getWeather(location);
+  getWeather(location.name);
 }
 
 // --- LOCAL STORAGE FUNCTIES ---
@@ -45,8 +44,8 @@ function setLocationToLocalStorage(location) {
 
 // --- FUNCTIES ---
 
-function getWeather({ name, country }) {
-  const url = `${apiUrl}?q=${name},${country}&appid=${apiKey}&units=metric`;
+function getWeather(cityName) {
+  const url = `${apiUrl}?q=${cityName}&appid=${apiKey}&units=metric`;
 
   fetch(url)
     .then((res) => {
@@ -61,8 +60,6 @@ function getWeather({ name, country }) {
 
 function display(data) {
   console.log("Weer data ontvangen:", data);
-
-  // Hier gaan we straks de HTML vullen
 }
 
 function setupSearch() {
