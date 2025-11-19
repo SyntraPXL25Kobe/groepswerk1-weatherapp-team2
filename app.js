@@ -57,7 +57,7 @@ function getWeather(cityName, userType) {
     .then((data) => {
       switch (userType) {
         case "vampire":
-          dispaplayVampireContent(data);
+          displayVampireContent(data);
           break;
         case "guardian":
           displayGuardianContent(data);
@@ -129,6 +129,48 @@ function currentLocation() {
   }
 }
 
+function displayVampireContent(data){
+  const currentLocationElement = document.getElementById("currentLocation");
+  const temperatureElement = document.getElementById("temperature");
+  const weatherIconElement = document.getElementById("weatherIcon");
+  const weatherDescriptionElement = document.getElementById("weatherDescription");
+  const sunrise = document.getElementById('sunriseHour');
+  const sunriseTime = new Date(data.sys.sunrise * 1000);
+  const sunriseTimeString = sunriseTime.toLocaleTimeString('nl-BE', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  const sunset = document.getElementById('sunsetHour');
+  const sunsetTime = new Date(data.sys.sunset * 1000);
+  const sunsetTimeString = sunsetTime.toLocaleTimeString('nl-BE', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  const vampireAdvice = document.getElementById('vampireAdvice')
+  const dayAdvice = "Please stay inside for your own good";
+  const nightAdvice = "Go play outside, you're free to do";
+  const now = new Date();
+
+  currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
+  temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
+  weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
+  weatherDescriptionElement.innerText = data.weather[0].description;
+  sunrise.innerHTML = sunriseTimeString;
+  sunset.innerHTML = sunsetTimeString;
+
+  if (now >= sunriseTime && now < sunsetTime) {
+    // Het is overdag
+    vampireAdvice.innerHTML = "⚠️ Gevaar! De zon schijnt. Blijf in je kist!";
+    // Optioneel: voeg een class toe voor styling
+    vampireAdvice.style.color = "red"; 
+  } else {
+      // Het is nacht (of voor zonsopkomst/na zonsondergang)
+      vampireAdvice.innerHTML = "🧛 Het is veilig. Tijd voor een snack!";
+      vampireAdvice.style.color = "green";
+  }
+
+}
+
 function displaySurferContent(data) {
   const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
@@ -166,3 +208,5 @@ function displayGuardianContent(data) {
   excpectedRainElement.innerText = `${data.rain?.["1h"] || 0} mm`;
   humidityElement.innerText = `${data.main.humidity}%`;
 }
+
+init()
