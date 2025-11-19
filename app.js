@@ -192,6 +192,7 @@ function displayVampireContent(data) {
 }
 
 function displaySurferContent(data) {
+  const location = { name: data.name };
   const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
@@ -203,24 +204,6 @@ function displaySurferContent(data) {
     document.getElementById("windDirectionArrow");
   const addToFavoritesButton = document.getElementById("addToFavoritesButton");
   const favoriteIconElement = document.getElementById("favoriteIcon");
-
-  if (isFavorite({ name: data.name })) {
-    favoriteIconElement.style.fill = "#ef4444";
-  } else {
-    favoriteIconElement.style.fill = "transparent";
-  }
-
-  addToFavoritesButton.addEventListener("click", () => {
-    const location = { name: data.name };
-
-    if (isFavorite(location)) {
-      removeFromFavorites(location);
-      favoriteIconElement.style.fill = "transparent";
-    } else {
-      addToFavorites(location);
-      favoriteIconElement.style.fill = "#ef4444";
-    }
-  });
 
   currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
