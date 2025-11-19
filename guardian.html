@@ -58,46 +58,52 @@
         </div>
 
         <!-- INFO BOXES -->
-        <div class="grid grid-cols-2 gap-3 text-sm">
+        <div class="grid md:grid-cols-2 gap-3 text-sm">
 
             <!-- expected rain -->
             <article
                 class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1"
             >
-                <p class="text-xs opacity-80">Expected Rain</p>
-                <p class="text-2xl font-bold">82%</p>
+                <p class="text-xs opacity-80">Temperature</p>
+                <div>
+                   <p class="text-2xl font-bold" id="temperature"></p>
+                   <div id="weatherIcon" class="bg-contain w-20 h-20"></div>
+                </div>
+             <p class="italic text-sm" id="weatherDescription"></p>
             </article>
 
             <!-- humidity -->
             <article
                 class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1"
             >
-                <p class="text-xs opacity-80">Vochtigheid</p>
-                <p class="text-2xl font-bold">91%</p>
+                <p class="text-xs opacity-80">Humidity</p>
+                <p class="text-2xl font-bold" id=humidity></p>
             </article>
 
-            <!-- wind -->
+            <!-- Expected rain in 1 hour -->
             <article
-                class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1 col-span-2"
+                class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1"
             >
-                <p class="text-xs opacity-80">Wind</p>
-                <p class="text-xl font-semibold">12 km/u</p>
+                <p class="text-xs opacity-80">Expected rain</p>
+                <p class="text-2xl font-bold" id="expectedRain"></p>
             </article>
 
-        </div>
 
-        <!-- adivce -->
-        <div class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 text-sm">
+          <!-- advice -->
+            <div class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 text-sm">
             <p class="text-xs uppercase tracking-wide opacity-80 mb-1">
                 Guardian Advice
             </p>
             <p class="leading-snug">
-                Advies guardian
+          
             </p>
         </div>
+
+        
       </section>
 
 
   </div>
+  <script src="/app.js"></script>
 </body>
 </html>
