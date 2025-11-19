@@ -25,6 +25,7 @@ function init() {
   // 3. Weer ophalen (LET OP: aanhalingstekens om de stad!)
   getWeather(location.name);
 
+  currentLocation();
 
 }
 
@@ -47,6 +48,7 @@ function setLocationToLocalStorage(location) {
 
 function getWeather(cityName) {
   const url = `${apiUrl}?q=${cityName}&appid=${apiKey}&units=metric`;
+  const locationTitle = document.getElementById('currentLocation');
 
   fetch(url)
     .then((res) => {
@@ -56,7 +58,10 @@ function getWeather(cityName) {
       return res.json();
     })
     .then((data) => display(data))
-    .catch((err) => console.error("Fout bij ophalen weer:", err));
+    .catch((err) => {
+        console.error("Fout:", err);
+        locationTitle.innerText = "Stad niet gevonden 😕";
+    });
 }
 
 function display(data) {
@@ -101,7 +106,15 @@ function userTypeNavigation(userType) {
 
 function currentLocation(){
     const location = getLocationFromLocalStorage();
-    const currentLocation = document.getElementById('currentLocation');
+    const currentLocationElement = document.getElementById('currentLocation'); // Heb de naam iets aangepast om verwarring te voorkomen
 
-    currentLocation.innerHTML = `${location.name}`;
+    // IF: Check of location bestaat EN of er een naam in zit
+    if (location && location.name) {
+        currentLocationElement.innerHTML = `${location.name}`;
+    } 
+    else {
+        // ELSE: Error message of fallback
+        currentLocationElement.innerHTML = "Locatie onbekend";
+        console.warn("Geen locatie gevonden in local storage!");
+    }
 }
