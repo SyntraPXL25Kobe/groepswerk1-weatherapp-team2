@@ -1,4 +1,5 @@
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
+const weatherIconUrl = "https://openweathermap.org/img/wn/";
 const apiKey = "38d41c5560fd9cdbd9cd0686d13a47b5";
 const defaultLocation = {
   name: "Genk",
@@ -13,31 +14,27 @@ function init() {
 
   // 1. Navigatie activeren (met veiligheidscheck)
   const userType = document.getElementById("userType");
-  if (userType) {
-    userType.addEventListener("change", (event) => {
-      userTypeNavigation(event.target.value);
-    });
-  }
+
+  userType.addEventListener("change", (event) => {
+    userTypeNavigation(event.target.value);
+  });
 
   // 2. Zoekbalk activeren
-  setupSearch();
+  setupSearch(userType.value);
 
   // 3. Weer ophalen (LET OP: aanhalingstekens om de stad!)
-  getWeather(location.name);
-
-  currentLocation();
-
+  getWeather(location.name, userType.value);
 }
 
 // --- LOCAL STORAGE FUNCTIES ---
 
 function getLocationFromLocalStorage() {
-    const location = JSON.parse(localStorage.getItem("location"));
-    if(location){   
-        return location;
-    }
+  const location = JSON.parse(localStorage.getItem("location"));
+  if (location) {
+    return location;
+  }
 
-    setLocationToLocalStorage(defaultLocation);
+  setLocationToLocalStorage(defaultLocation);
 }
 
 function setLocationToLocalStorage(location) {
@@ -46,9 +43,9 @@ function setLocationToLocalStorage(location) {
 
 // --- FUNCTIES ---
 
-function getWeather(cityName) {
+function getWeather(cityName, userType) {
   const url = `${apiUrl}?q=${cityName}&appid=${apiKey}&units=metric`;
-  const locationTitle = document.getElementById('currentLocation');
+  const locationTitle = document.getElementById("currentLocation");
 
   fetch(url)
     .then((res) => {
@@ -57,19 +54,34 @@ function getWeather(cityName) {
       }
       return res.json();
     })
-    .then((data) => display(data))
+    .then((data) => {
+      switch (userType) {
+        case "vampire":
+          dispaplayVampireContent(data);
+          break;
+        case "guardian":
+          displayGuardianContent(data);
+          break;
+        case "surfer":
+          displaySurferContent(data);
+          break;
+        default:
+          displayDefaultContent(data);
+          break;
+      }
+    })
     .catch((err) => {
-        console.error("Fout:", err);
-        locationTitle.innerText = "Stad niet gevonden 😕";
+      console.error("Fout:", err);
+      locationTitle.innerText = "Stad niet gevonden 😕";
     });
 }
 
-function display(data) {
-    console.log("Weer data ontvangen:", data);
-    currentLocation();
+function displayDefaultContent(data) {
+  console.log("Weer data ontvangen:", data);
+  currentLocation();
 }
 
-function setupSearch() {
+function setupSearch(userType) {
   const searchInput = document.getElementById("searchInput");
 
   if (searchInput) {
@@ -78,13 +90,12 @@ function setupSearch() {
         const city = searchInput.value;
         if (city) {
           console.log(`Zoeken naar: ${city}`);
-          getWeather(city);
-          setLocationToLocalStorage({name:city})
+          getWeather(city, userType);
+          setLocationToLocalStorage({ name: city });
           searchInput.value = "";
         }
       }
     });
-    
   }
 }
 
@@ -104,17 +115,36 @@ function userTypeNavigation(userType) {
   }
 }
 
-function currentLocation(){
-    const location = getLocationFromLocalStorage();
-    const currentLocationElement = document.getElementById('currentLocation'); // Heb de naam iets aangepast om verwarring te voorkomen
+function currentLocation() {
+  const location = getLocationFromLocalStorage();
+  const currentLocationElement = document.getElementById("currentLocation"); // Heb de naam iets aangepast om verwarring te voorkomen
 
-    // IF: Check of location bestaat EN of er een naam in zit
-    if (location && location.name) {
-        currentLocationElement.innerHTML = `${location.name}`;
-    } 
-    else {
-        // ELSE: Error message of fallback
-        currentLocationElement.innerHTML = "Locatie onbekend";
-        console.warn("Geen locatie gevonden in local storage!");
-    }
+  // IF: Check of location bestaat EN of er een naam in zit
+  if (location && location.name) {
+    currentLocationElement.innerHTML = `${location.name}`;
+  } else {
+    // ELSE: Error message of fallback
+    currentLocationElement.innerHTML = "Locatie onbekend";
+    console.warn("Geen locatie gevonden in local storage!");
+  }
+}
+
+function displaySurferContent(data) {
+  const temperatureElement = document.getElementById("temperature");
+  const weatherIconElement = document.getElementById("weatherIcon");
+  const weatherDescriptionElement =
+    document.getElementById("weatherDescription");
+  const windSpeedElement = document.getElementById("windSpeed");
+  const windDirectionElement = document.getElementById("windDirection");
+  const windDirectionArrowElement =
+    document.getElementById("windDirectionArrow");
+
+  currentLocation();
+
+  temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
+  weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
+  weatherDescriptionElement.innerText = data.weather[0].description;
+  windSpeedElement.innerText = `${data.wind.speed} km/h`;
+  windDirectionElement.innerText = `${data.wind.deg}°`;
+  windDirectionArrowElement.style.transform = `rotate(${data.wind.deg}deg)`;
 }
