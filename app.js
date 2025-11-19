@@ -24,18 +24,19 @@ function init() {
 
   // 3. Weer ophalen (LET OP: aanhalingstekens om de stad!)
   getWeather(location.name);
+
+
 }
 
 // --- LOCAL STORAGE FUNCTIES ---
 
 function getLocationFromLocalStorage() {
-  const location = JSON.parse(localStorage.getItem("location"));
+    const location = JSON.parse(localStorage.getItem("location"));
+    if(location){   
+        return location;
+    }
 
-  if (location) {
-    return location;
-  }
-
-  setLocationToLocalStorage(defaultLocation);
+    setLocationToLocalStorage(defaultLocation);
 }
 
 function setLocationToLocalStorage(location) {
@@ -59,7 +60,8 @@ function getWeather(cityName) {
 }
 
 function display(data) {
-  console.log("Weer data ontvangen:", data);
+    console.log("Weer data ontvangen:", data);
+    currentLocation();
 }
 
 function setupSearch() {
@@ -95,4 +97,11 @@ function userTypeNavigation(userType) {
     default:
       location.assign("index.html");
   }
+}
+
+function currentLocation(){
+    const location = getLocationFromLocalStorage();
+    const currentLocation = document.getElementById('currentLocation');
+
+    currentLocation.innerHTML = `${location.name}`;
 }
