@@ -2,13 +2,13 @@
     --primary-color: ;
     --secondary-color: ;
     
-    --vampire-gradient: ;
+    --vampire-gradient: linear-gradient(0deg,rgba(62, 7, 3, 1) 0%, rgba(140, 16, 7, 1) 75%);;
     --vampire-primary-text: ;
     --varpire-secondary-text: ;
     --guardian-gradient: ;
     --vampire-primary-text: ;
     --varpire-secondary-text: ;
-    --surfer-gradient: ;
+    --surfer-gradient: linear-gradient(0deg,rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);;
     --vampire-primary-text: ;
     --varpire-secondary-text: ;
 
