@@ -1,58 +1,77 @@
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
+const apiKey = "38d41c5560fd9cdbd9cd0686d13a47b5";
+
 // Wacht tot de HTML structuur klaar is
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // Hier roep je jouw functies aan
     console.log("Pagina is klaar, starten maar!");
-    userTypeNavigation(); 
     
+    userTypeNavigation(); 
+    setupSearch();
+    
+    // START: Haal direct het weer op voor Genk (of je defaultLocation)
+    getWeather("Genk");
 });
 
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
-const iconUrl = "https://openweathermap.org/img/wn/";
-const apiKey = "38d41c5560fd9cdbd9cd0686d13a47b5";
-const defaultLocation = {
-  city: "Genk",
-  country: "BE",
-};
 
-// STAP 1: Maak de volledige URL met parameters
-// We voegen '&units=metric' toe zodat je Graden Celsius krijgt i.p.v. Kelvin
-const url = `${apiUrl}?q=${defaultLocation.city},${defaultLocation.country}&appid=${apiKey}&units=metric`;
+// --- FUNCTIES ---
 
-// STAP 2: Fetch met de volledige URL
-fetch(url)
-    .then(res => {
-        // Check even of het antwoord wel OK is (bijv. geen 404)
-        if (!res.ok) {
-            throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-    })
-    .then(data => display(data))
-    .catch(err => console.error("Er ging iets mis:", err));
+function getWeather(cityName) {
+    // De URL dynamisch bouwen
+    const url = `${apiUrl}?q=${cityName}&appid=${apiKey}&units=metric`;
 
+    fetch(url)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`Stad niet gevonden (${res.status})`);
+            }
+            return res.json();
+        })
+        .then(data => display(data))
+        .catch(err => console.error("Fout bij ophalen weer:", err));
+}
 
 function display(data){
-    // STAP 3: Geen aanhalingstekens, we willen de inhoud van de variabele zien
-    console.log(data); 
+    console.log("Weer data ontvangen:", data); 
+    
+    // TIP: Hier kun je straks de HTML gaan vullen
+    // Bijvoorbeeld:
+    // document.querySelector('h2').innerText = data.name;
+    // document.querySelector('#temp').innerText = Math.round(data.main.temp) + '°C';
+}
+
+function setupSearch() {
+    // ZORG DAT JE INPUT IN HTML OOK ECHT id="searchInput" HEEFT!
+    const searchInput = document.getElementById('searchInput');
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const city = searchInput.value; 
+                if (city) {
+                    console.log(`Zoeken naar: ${city}`);
+                    getWeather(city); 
+                    searchInput.value = ''; 
+                }
+            }
+        });
+    } else {
+        console.error("Kan zoekbalk niet vinden! Check je HTML id.");
+    }
 }
 
 function userTypeNavigation(){
-    userType.addEventListener('change', function() {
-        const value = this.value;
-
-        switch(value) {
-            case 'vampire':
-                location.assign('vampire.html');
-                break;
-            case 'guardian':
-                location.assign('guardian.html');
-                break;
-            case 'surfer':
-                location.assign('surfer.html');
-                break;
-            default:
-                location.assign('index.html');
-        }
-    });
+    const userType = document.getElementById('userType'); // <--- DEZE MISTE JE
+    
+    if (userType) {
+        userType.addEventListener('change', function() {
+            const value = this.value;
+            // Switch is netter, maar jouw if/else mag ook
+            switch(value) {
+                case 'vampire': location.assign('vampire.html'); break;
+                case 'guardian': location.assign('guardian.html'); break;
+                case 'surfer': location.assign('surfer.html'); break;
+                default: location.assign('index.html');
+            }
+        });
+    }
 }
