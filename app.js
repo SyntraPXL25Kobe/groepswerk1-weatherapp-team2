@@ -1,22 +1,31 @@
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 const apiKey = "38d41c5560fd9cdbd9cd0686d13a47b5";
 
-// Wacht tot de HTML structuur klaar is
-document.addEventListener("DOMContentLoaded", () => {
+// We roepen init pas aan als de pagina 'klaar' is met laden
+document.addEventListener("DOMContentLoaded", init);
+
+function init() {
     console.log("Pagina is klaar, starten maar!");
-    
-    userTypeNavigation(); 
+
+    // 1. Navigatie activeren (met veiligheidscheck)
+    const userType = document.getElementById("userType");
+    if (userType) {
+        userType.addEventListener("change", (event) => {
+            userTypeNavigation(event.target.value);
+        });
+    }
+
+    // 2. Zoekbalk activeren
     setupSearch();
-    
-    // START: Haal direct het weer op voor Genk (of je defaultLocation)
+
+    // 3. Weer ophalen (LET OP: aanhalingstekens om de stad!)
     getWeather("Genk");
-});
+}
 
 
 // --- FUNCTIES ---
 
 function getWeather(cityName) {
-    // De URL dynamisch bouwen
     const url = `${apiUrl}?q=${cityName}&appid=${apiKey}&units=metric`;
 
     fetch(url)
@@ -33,14 +42,10 @@ function getWeather(cityName) {
 function display(data){
     console.log("Weer data ontvangen:", data); 
     
-    // TIP: Hier kun je straks de HTML gaan vullen
-    // Bijvoorbeeld:
-    // document.querySelector('h2').innerText = data.name;
-    // document.querySelector('#temp').innerText = Math.round(data.main.temp) + '°C';
+    // Hier gaan we straks de HTML vullen
 }
 
 function setupSearch() {
-    // ZORG DAT JE INPUT IN HTML OOK ECHT id="searchInput" HEEFT!
     const searchInput = document.getElementById('searchInput');
     
     if (searchInput) {
@@ -54,24 +59,21 @@ function setupSearch() {
                 }
             }
         });
-    } else {
-        console.error("Kan zoekbalk niet vinden! Check je HTML id.");
     }
 }
 
-function userTypeNavigation(){
-    const userType = document.getElementById('userType'); // <--- DEZE MISTE JE
-    
-    if (userType) {
-        userType.addEventListener('change', function() {
-            const value = this.value;
-            // Switch is netter, maar jouw if/else mag ook
-            switch(value) {
-                case 'vampire': location.assign('vampire.html'); break;
-                case 'guardian': location.assign('guardian.html'); break;
-                case 'surfer': location.assign('surfer.html'); break;
-                default: location.assign('index.html');
-            }
-        });
-    }
+function userTypeNavigation(userType) {
+  switch (userType) {
+    case "vampire":
+      location.assign("vampire.html");
+      break;
+    case "guardian":
+      location.assign("guardian.html");
+      break;
+    case "surfer":
+      location.assign("surfer.html");
+      break;
+    default:
+      location.assign("index.html");
+  }
 }
