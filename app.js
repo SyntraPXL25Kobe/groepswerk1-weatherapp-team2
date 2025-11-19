@@ -130,6 +130,7 @@ function currentLocation() {
 }
 
 function displaySurferContent(data) {
+  const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
   const weatherDescriptionElement =
@@ -139,35 +140,28 @@ function displaySurferContent(data) {
   const windDirectionArrowElement =
     document.getElementById("windDirectionArrow");
 
-  currentLocation();
-
-
+  currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
   weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
   weatherDescriptionElement.innerText = data.weather[0].description;
   windSpeedElement.innerText = `${data.wind.speed} km/h`;
   windDirectionElement.innerText = `${data.wind.deg}°`;
   windDirectionArrowElement.style.transform = `rotate(${data.wind.deg}deg)`;
+}
 
-
-  } 
-
-
- function displayGuardianContent(data) {
+function displayGuardianContent(data) {
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
   const weatherDescriptionElement =
     document.getElementById("weatherDescription");
   const humidityElement = document.getElementById("humidity");
   const excpectedRainElement = document.getElementById("expectedRain");
-  
+
   currentLocation();
 
-   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
-    weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
-    weatherDescriptionElement.innerText = data.weather[0].description;
-    excpectedRainElement.innerText= `${data.rain?.["1h"] || 0} mm`;
-    humidityElement.innerText = `${data.main.humidity}%`;
-
-
- }
+  temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
+  weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
+  weatherDescriptionElement.innerText = data.weather[0].description;
+  excpectedRainElement.innerText = `${data.rain?.["1h"] || 0} mm`;
+  humidityElement.innerText = `${data.main.humidity}%`;
+}
