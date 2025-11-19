@@ -150,6 +150,7 @@ function displaySurferContent(data) {
 }
 
 function displayGuardianContent(data) {
+  const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
   const weatherDescriptionElement =
@@ -158,7 +159,7 @@ function displayGuardianContent(data) {
   const excpectedRainElement = document.getElementById("expectedRain");
 
   currentLocation();
-
+  currentLocationElement.innerHTML = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
   weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
   weatherDescriptionElement.innerText = data.weather[0].description;
