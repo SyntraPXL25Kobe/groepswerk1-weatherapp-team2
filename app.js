@@ -75,10 +75,12 @@ function setupSearch() {
         if (city) {
           console.log(`Zoeken naar: ${city}`);
           getWeather(city);
+          setLocationToLocalStorage(searchInput.value)
           searchInput.value = "";
         }
       }
     });
+    
   }
 }
 
