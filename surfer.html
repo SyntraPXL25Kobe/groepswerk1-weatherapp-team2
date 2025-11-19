@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Iluminati Weatherapp - Surfer</title>
+    <title>Surfer Weather</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
+
   <body class="bg-[image:var(--surfer-gradient)] text-gray-800 min-h-screen">
     <div class="max-w-3xl mx-auto p-6 space-y-6">
       <header class="flex items-center justify-between">
@@ -19,20 +20,83 @@
         </select>
       </header>
       <section class="bg-[var(--bg-info)] rounded-lg shadow p-4 space-y-4">
-        <h2 class="text-3xl font-bold">Surfer waves</h2>
+        <div
+          class="rounded-3xl shadow-xl p-5 space-y-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20"
+        >
+          <div class="flex items-start justify-between">
+            <div>
+              <h1 class="text-2xl font-bold">Surfer</h1>
+              <p class="text-xs uppercase tracking-wide opacity-80"></p>
+            </div>
 
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Search"
-          class="w-full border border-gray-300 rounded px-3 py-2"
-        />
+            <div class="text-4xl">🏄‍♂️</div>
+          </div>
 
-        <h3 class="font-semibold text-xl" id="currentLocation"></h3>
+          <div class="space-y-1">
+            <p class="text-xs opacity-80">Location</p>
+            <p class="text-lg font-semibold" id="currentLocation"></p>
+          </div>
+
+          <div class="pt-1">
+            <div class="relative">
+              <input
+                id="searchInput"
+                type="text"
+                placeholder="Search location"
+                class="w-full rounded-full px-4 py-2 text-sm text-gray-900 bg-white/90 border border-white/40"
+              />
+              <button
+                class="absolute right-2 top-[7px] px-4 py-1 text-xs rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-400 cursor-pointer"
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-3 text-sm">
+          <article
+            class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1 md:col-span-2"
+          >
+            <p class="text-xs opacity-80">Temperature</p>
+            <div>
+              <p class="text-2xl font-bold" id="temperature"></p>
+              <div id="weatherIcon" class="bg-contain w-20 h-20"></div>
+            </div>
+            <p class="italic text-sm" id="weatherDescription"></p>
+          </article>
+          <article
+            class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1"
+          >
+            <p class="text-xs opacity-80">Wind speed</p>
+            <p class="text-2xl font-bold" id="windSpeed"></p>
+          </article>
+
+          <article
+            class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1"
+          >
+            <p class="text-xs opacity-80">Wind direction</p>
+            <p class="text-2xl font-bold" id="windDirection"></p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100"
+              height="100"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="0.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-move-up-icon lucide-move-up"
+              id="windDirectionArrow"
+            >
+              <path d="M8 6L12 2L16 6" />
+              <path d="M12 2V22" />
+            </svg>
+          </article>
+        </div>
       </section>
-
-      <footer class="text-xs text-gray-500">//footer</footer>
     </div>
+    <script src="app.js"></script>
   </body>
-  <script src="/app.js"></script>
 </html>
