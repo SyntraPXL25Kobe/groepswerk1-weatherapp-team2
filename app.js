@@ -72,7 +72,7 @@ function setupSearch() {
         if (city) {
           console.log(`Zoeken naar: ${city}`);
           getWeather(city);
-          setLocationToLocalStorage(searchInput.value)
+          setLocationToLocalStorage({name:city})
           searchInput.value = "";
         }
       }
