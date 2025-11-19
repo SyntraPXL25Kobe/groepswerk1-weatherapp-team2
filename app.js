@@ -35,6 +35,7 @@ function getLocationFromLocalStorage() {
   }
 
   setLocationToLocalStorage(defaultLocation);
+  return defaultLocation;
 }
 
 function setLocationToLocalStorage(location) {
@@ -129,24 +130,44 @@ function currentLocation() {
   }
 }
 
-function displayVampireContent(data){
+function addToFavorites(location) {
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  favorites.push(location);
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+function removeFromFavorites(location) {
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const updatedFavorites = favorites.filter(
+    (fav) => fav.name !== location.name
+  );
+  localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+}
+
+function isFavorite(location) {
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  return favorites.some((fav) => fav.name === location.name);
+}
+
+function displayVampireContent(data) {
   const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
-  const weatherDescriptionElement = document.getElementById("weatherDescription");
-  const sunrise = document.getElementById('sunriseHour');
+  const weatherDescriptionElement =
+    document.getElementById("weatherDescription");
+  const sunrise = document.getElementById("sunriseHour");
   const sunriseTime = new Date(data.sys.sunrise * 1000);
-  const sunriseTimeString = sunriseTime.toLocaleTimeString('nl-BE', {
-    hour: '2-digit',
-    minute: '2-digit'
+  const sunriseTimeString = sunriseTime.toLocaleTimeString("nl-BE", {
+    hour: "2-digit",
+    minute: "2-digit",
   });
-  const sunset = document.getElementById('sunsetHour');
+  const sunset = document.getElementById("sunsetHour");
   const sunsetTime = new Date(data.sys.sunset * 1000);
-  const sunsetTimeString = sunsetTime.toLocaleTimeString('nl-BE', {
-    hour: '2-digit',
-    minute: '2-digit'
+  const sunsetTimeString = sunsetTime.toLocaleTimeString("nl-BE", {
+    hour: "2-digit",
+    minute: "2-digit",
   });
-  const vampireAdvice = document.getElementById('vampireAdvice')
+  const vampireAdvice = document.getElementById("vampireAdvice");
   const dayAdvice = "Please stay inside for your own good";
   const nightAdvice = "Go play outside, you're free to do";
   const now = new Date();
@@ -162,13 +183,12 @@ function displayVampireContent(data){
     // Het is overdag
     vampireAdvice.innerHTML = "⚠️ Gevaar! De zon schijnt. Blijf in je kist!";
     // Optioneel: voeg een class toe voor styling
-    vampireAdvice.style.color = "red"; 
+    vampireAdvice.style.color = "red";
   } else {
-      // Het is nacht (of voor zonsopkomst/na zonsondergang)
-      vampireAdvice.innerHTML = "🧛 Het is veilig. Tijd voor een snack!";
-      vampireAdvice.style.color = "green";
+    // Het is nacht (of voor zonsopkomst/na zonsondergang)
+    vampireAdvice.innerHTML = "🧛 Het is veilig. Tijd voor een snack!";
+    vampireAdvice.style.color = "green";
   }
-
 }
 
 function displaySurferContent(data) {
@@ -181,6 +201,26 @@ function displaySurferContent(data) {
   const windDirectionElement = document.getElementById("windDirection");
   const windDirectionArrowElement =
     document.getElementById("windDirectionArrow");
+  const addToFavoritesButton = document.getElementById("addToFavoritesButton");
+  const favoriteIconElement = document.getElementById("favoriteIcon");
+
+  if (isFavorite({ name: data.name })) {
+    favoriteIconElement.style.fill = "#ef4444";
+  } else {
+    favoriteIconElement.style.fill = "transparent";
+  }
+
+  addToFavoritesButton.addEventListener("click", () => {
+    const location = { name: data.name };
+
+    if (isFavorite(location)) {
+      removeFromFavorites(location);
+      favoriteIconElement.style.fill = "transparent";
+    } else {
+      addToFavorites(location);
+      favoriteIconElement.style.fill = "#ef4444";
+    }
+  });
 
   currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
@@ -208,5 +248,3 @@ function displayGuardianContent(data) {
   excpectedRainElement.innerText = `${data.rain?.["1h"] || 0} mm`;
   humidityElement.innerText = `${data.main.humidity}%`;
 }
-
-init()
