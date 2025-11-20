@@ -175,7 +175,7 @@ function isFavorite(location) {
   return favorites.some((fav) => fav.name === location.name);
 }
 
-function favoriteHeart(){
+function favoriteHeart(location) {
   const addToFavoritesButton = document.getElementById("addToFavoritesButton");
 
   const cloneButton = addToFavoritesButton.cloneNode(true);
@@ -202,7 +202,7 @@ function favoriteHeart(){
   } else {
     favoriteIconElement.style.fill = "none";
   }
-};
+}
 
 
 
@@ -211,7 +211,8 @@ function displayVampireContent(data) {
   const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
-  const weatherDescriptionElement = document.getElementById("weatherDescription");
+  const weatherDescriptionElement =
+    document.getElementById("weatherDescription");
   const sunriseElement = document.getElementById("sunriseHour");
   const sunsetElement = document.getElementById("sunsetHour");
   const vampireAdvice = document.getElementById("vampireAdvice");
@@ -233,12 +234,13 @@ function displayVampireContent(data) {
   weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
   weatherDescriptionElement.innerText = data.weather[0].description;
 
-  localTime.innerHTML = getLocalTimeString(Date.now() /1000);
+  localTime.innerHTML = getLocalTimeString(Date.now() / 1000);
   sunriseElement.innerHTML = getLocalTimeString(data.sys.sunrise);
   sunsetElement.innerHTML = getLocalTimeString(data.sys.sunset);
 
   const currentUtcTime = Math.floor(Date.now() / 1000);
-  const isDayTime = currentUtcTime >= data.sys.sunrise && currentUtcTime < data.sys.sunset;
+  const isDayTime =
+    currentUtcTime >= data.sys.sunrise && currentUtcTime < data.sys.sunset;
 
   if (isDayTime) {
     vampireAdvice.innerHTML = "⚠️ Gevaar! De zon schijnt. Blijf in je kist!";
@@ -271,10 +273,8 @@ function displaySurferContent(data) {
   windDirectionElement.innerText = `${data.wind.deg}°`;
   windDirectionArrowElement.style.transform = `rotate(${data.wind.deg}deg)`;
 
-  favoriteHeart();
-};
-
-
+  favoriteHeart(location);
+}
 
 function displayGuardianContent(data) {
   const currentLocationElement = document.getElementById("currentLocation");
@@ -294,4 +294,4 @@ function displayGuardianContent(data) {
   humidityElement.innerText = `${data.main.humidity}%`;
 
   favoriteHeart();
-};
+}
