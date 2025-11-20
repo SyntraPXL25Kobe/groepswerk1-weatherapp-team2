@@ -140,19 +140,8 @@ function getFavoritesFromLocalStorage() {
 
 function addToFavorites(location) {
   const favorites = getFavoritesFromLocalStorage();
-  const favoriteExists = favorites.some((fav) => fav.data.name == location.name);
 
-  if (favoriteExists){
-    return;
-  }
-  
-  const newFavorite = {
-    id: crypto.randomUUID(),
-    data: location,
-    createdAt: new Date().toISOString()
-  };
-
-  favorites.push(newFavorite);
+  favorites.push(location);
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
@@ -173,39 +162,39 @@ function displayVampireContent(data) {
   const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
-  const weatherDescriptionElement =
-    document.getElementById("weatherDescription");
-  const sunrise = document.getElementById("sunriseHour");
-  const sunriseTime = new Date(data.sys.sunrise * 1000);
-  const sunriseTimeString = sunriseTime.toLocaleTimeString("nl-BE", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  const sunset = document.getElementById("sunsetHour");
-  const sunsetTime = new Date(data.sys.sunset * 1000);
-  const sunsetTimeString = sunsetTime.toLocaleTimeString("nl-BE", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const weatherDescriptionElement = document.getElementById("weatherDescription");
+  const sunriseElement = document.getElementById("sunriseHour");
+  const sunsetElement = document.getElementById("sunsetHour");
   const vampireAdvice = document.getElementById("vampireAdvice");
-  const dayAdvice = "Please stay inside for your own good";
-  const nightAdvice = "Go play outside, you're free to do";
-  const now = new Date();
+  const localTime = document.getElementById("localTime");
+
+  const timezoneOffset = data.timezone;
+
+  const getLocalTimeString = (timestamp) => {
+    const localDate = new Date((timestamp + timezoneOffset) * 1000);
+    return localDate.toLocaleTimeString("nl-BE", {
+      timeZone: "UTC",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
   weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
   weatherDescriptionElement.innerText = data.weather[0].description;
-  sunrise.innerHTML = sunriseTimeString;
-  sunset.innerHTML = sunsetTimeString;
 
-  if (now >= sunriseTime && now < sunsetTime) {
-    // Het is overdag
+  localTime.innerHTML = getLocalTimeString(Date.now() /1000);
+  sunriseElement.innerHTML = getLocalTimeString(data.sys.sunrise);
+  sunsetElement.innerHTML = getLocalTimeString(data.sys.sunset);
+
+  const currentUtcTime = Math.floor(Date.now() / 1000);
+  const isDayTime = currentUtcTime >= data.sys.sunrise && currentUtcTime < data.sys.sunset;
+
+  if (isDayTime) {
     vampireAdvice.innerHTML = "⚠️ Gevaar! De zon schijnt. Blijf in je kist!";
-    // Optioneel: voeg een class toe voor styling
     vampireAdvice.style.color = "red";
   } else {
-    // Het is nacht (of voor zonsopkomst/na zonsondergang)
     vampireAdvice.innerHTML = "🧛 Het is veilig. Tijd voor een snack!";
     vampireAdvice.style.color = "green";
   }
