@@ -84,6 +84,17 @@ function displayDefaultContent(data) {
 
 function setupSearch(userType) {
   const searchInput = document.getElementById("searchInput");
+  const searchButton = document.getElementById("searchButton");
+
+  searchButton.addEventListener("click", function () {
+    const city = searchInput.value;
+    if (city) {
+      console.log(`Zoeken naar: ${city}`);
+      getWeather(city, userType);
+      setLocationToLocalStorage({ name: city });
+      searchInput.value = "";
+    }
+  });
 
   if (searchInput) {
     searchInput.addEventListener("keypress", function (event) {
