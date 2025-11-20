@@ -78,15 +78,22 @@ function getWeather(cityName, userType) {
 }
 
 function displayHomeContent(data) {
+  const location = { name: data.name };
   console.log("Weer data ontvangen:", data);
-  currentLocation();
+  const currentLocationElement = document.getElementById("currentLocation");
+  currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
 
-  // const homeFavorites = document.getElementById("homeFavorites");
+
+  const homeFavorites = document.getElementById("homeFavorites");
+  homeFavorites.innerHTML = "";
   const favoritesStorage = getFavoritesFromLocalStorage();
   favoritesStorage.forEach(favorite => {
-    console.log(`Favorieten ${favorite.data}`);
+    console.log(`Favorieten ${favorite.name}`);
+    homeFavorites.innerHTML += `<div class="p-4 rounded-2xl bg-[var(--bg-info)] backdrop-blur-md border border-white/20 shadow-sm cursor-pointer hover:bg-white/30 transition-colors flex justify-between items-center font-semibold">${favorite.name}</div>`
+    
   });
-}
+  favoriteHeart(location);
+};
 
 function setupSearch(userType) {
   const searchInput = document.getElementById("searchInput");
@@ -114,8 +121,8 @@ function setupSearch(userType) {
         }
       }
     });
-  }
-}
+  };
+};
 
 function userTypeNavigation(userType) {
   switch (userType) {
@@ -130,8 +137,8 @@ function userTypeNavigation(userType) {
       break;
     default:
       location.assign("index.html");
-  }
-}
+  };
+};
 
 function currentLocation() {
   const location = getLocationFromLocalStorage();
@@ -144,8 +151,8 @@ function currentLocation() {
     // ELSE: Error message of fallback
     currentLocationElement.innerHTML = "Locatie onbekend";
     console.warn("Geen locatie gevonden in local storage!");
-  }
-}
+  };
+};
 
 function getFavoritesFromLocalStorage() {
   const favorites = JSON.parse(localStorage.getItem("favorites"));
@@ -153,14 +160,14 @@ function getFavoritesFromLocalStorage() {
     return favorites;
   }
   return [];
-}
+};
 
 function addToFavorites(location) {
   const favorites = getFavoritesFromLocalStorage();
 
   favorites.push(location);
   localStorage.setItem("favorites", JSON.stringify(favorites));
-}
+};
 
 function removeFromFavorites(location) {
   const favorites = getFavoritesFromLocalStorage();
@@ -168,12 +175,12 @@ function removeFromFavorites(location) {
     (fav) => fav.name !== location.name
   );
   localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-}
+};
 
 function isFavorite(location) {
   const favorites = getFavoritesFromLocalStorage();
   return favorites.some((fav) => fav.name === location.name);
-}
+};
 
 function favoriteHeart(location) {
   const addToFavoritesButton = document.getElementById("addToFavoritesButton");
@@ -201,13 +208,14 @@ function favoriteHeart(location) {
     favoriteIconElement.style.fill = "#fb2c36";
   } else {
     favoriteIconElement.style.fill = "none";
-  }
-}
+  };
+};
 
 
 
 
 function displayVampireContent(data) {
+  const location = { name: data.name };
   const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
@@ -250,8 +258,8 @@ function displayVampireContent(data) {
     vampireAdvice.style.color = "green";
   }
 
-  favoriteHeart();
-}
+  favoriteHeart(location);
+};
 
 function displaySurferContent(data) {
   const location = { name: data.name };
@@ -274,9 +282,10 @@ function displaySurferContent(data) {
   windDirectionArrowElement.style.transform = `rotate(${data.wind.deg}deg)`;
 
   favoriteHeart(location);
-}
+};
 
 function displayGuardianContent(data) {
+  const location = { name: data.name };
   const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
   const weatherIconElement = document.getElementById("weatherIcon");
@@ -293,5 +302,5 @@ function displayGuardianContent(data) {
   excpectedRainElement.innerText = `${data.rain?.["1h"] || 0} mm`;
   humidityElement.innerText = `${data.main.humidity}%`;
 
-  favoriteHeart();
-}
+  favoriteHeart(location);
+};
