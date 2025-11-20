@@ -130,14 +130,22 @@ function currentLocation() {
   }
 }
 
+function getFavoritesFromLocalStorage() {
+  const favorites = JSON.parse(localStorage.getItem("favorites"));
+  if (favorites) {
+    return favorites;
+  }
+  return [];
+}
+
 function addToFavorites(location) {
-  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const favorites = getFavoritesFromLocalStorage();
   favorites.push(location);
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
 function removeFromFavorites(location) {
-  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const favorites = getFavoritesFromLocalStorage();
   const updatedFavorites = favorites.filter(
     (fav) => fav.name !== location.name
   );
@@ -145,7 +153,7 @@ function removeFromFavorites(location) {
 }
 
 function isFavorite(location) {
-  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const favorites = getFavoritesFromLocalStorage();
   return favorites.some((fav) => fav.name === location.name);
 }
 
@@ -202,8 +210,20 @@ function displaySurferContent(data) {
   const windDirectionElement = document.getElementById("windDirection");
   const windDirectionArrowElement =
     document.getElementById("windDirectionArrow");
-  const addToFavoritesButton = document.getElementById("addToFavoritesButton");
   const favoriteIconElement = document.getElementById("favoriteIcon");
+
+  favoriteIconElement.style.fill = isFavorite(location) ? "#fb2c36" : "none";
+
+  favoriteIconElement.addEventListener("click", () => {
+    console.log(location);
+    if (isFavorite(location)) {
+      removeFromFavorites(location);
+      favoriteIconElement.style.fill = "none";
+    } else {
+      addToFavorites(location);
+      favoriteIconElement.style.fill = "#fb2c36";
+    }
+  });
 
   currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
