@@ -210,12 +210,16 @@ function displaySurferContent(data) {
   const windDirectionElement = document.getElementById("windDirection");
   const windDirectionArrowElement =
     document.getElementById("windDirectionArrow");
-  const favoriteIconElement = document.getElementById("favoriteIcon");
+  const addToFavoritesButton = document.getElementById("addToFavoritesButton");
 
-  favoriteIconElement.style.fill = isFavorite(location) ? "#fb2c36" : "none";
+  const cloneButton = addToFavoritesButton.cloneNode(true);
 
-  favoriteIconElement.addEventListener("click", () => {
-    console.log(location);
+  addToFavoritesButton.parentNode.replaceChild(
+    cloneButton,
+    addToFavoritesButton
+  );
+
+  cloneButton.addEventListener("click", () => {
     if (isFavorite(location)) {
       removeFromFavorites(location);
       favoriteIconElement.style.fill = "none";
@@ -224,6 +228,14 @@ function displaySurferContent(data) {
       favoriteIconElement.style.fill = "#fb2c36";
     }
   });
+
+  const favoriteIconElement = document.getElementById("favoriteIcon");
+
+  if (isFavorite(location)) {
+    favoriteIconElement.style.fill = "#fb2c36";
+  } else {
+    favoriteIconElement.style.fill = "none";
+  }
 
   currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
