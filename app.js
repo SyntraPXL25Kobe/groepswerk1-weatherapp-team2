@@ -67,7 +67,7 @@ function getWeather(cityName, userType) {
           displaySurferContent(data);
           break;
         default:
-          displayDefaultContent(data);
+          displayHomeContent(data);
           break;
       }
     })
@@ -77,9 +77,15 @@ function getWeather(cityName, userType) {
     });
 }
 
-function displayDefaultContent(data) {
+function displayHomeContent(data) {
   console.log("Weer data ontvangen:", data);
   currentLocation();
+
+  // const homeFavorites = document.getElementById("homeFavorites");
+  const favoritesStorage = getFavoritesFromLocalStorage();
+  favoritesStorage.forEach(favorite => {
+    console.log(`Favorieten ${favorite.data}`);
+  });
 }
 
 function setupSearch(userType) {
@@ -197,6 +203,9 @@ function favoriteHeart(){
     favoriteIconElement.style.fill = "none";
   }
 };
+
+
+
 
 function displayVampireContent(data) {
   const currentLocationElement = document.getElementById("currentLocation");
