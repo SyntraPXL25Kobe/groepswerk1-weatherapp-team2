@@ -169,6 +169,35 @@ function isFavorite(location) {
   return favorites.some((fav) => fav.name === location.name);
 }
 
+function favoriteHeart(){
+  const addToFavoritesButton = document.getElementById("addToFavoritesButton");
+
+  const cloneButton = addToFavoritesButton.cloneNode(true);
+
+  addToFavoritesButton.parentNode.replaceChild(
+    cloneButton,
+    addToFavoritesButton
+  );
+
+  cloneButton.addEventListener("click", () => {
+    if (isFavorite(location)) {
+      removeFromFavorites(location);
+      favoriteIconElement.style.fill = "none";
+    } else {
+      addToFavorites(location);
+      favoriteIconElement.style.fill = "#fb2c36";
+    }
+  });
+
+  const favoriteIconElement = document.getElementById("favoriteIcon");
+
+  if (isFavorite(location)) {
+    favoriteIconElement.style.fill = "#fb2c36";
+  } else {
+    favoriteIconElement.style.fill = "none";
+  }
+};
+
 function displayVampireContent(data) {
   const currentLocationElement = document.getElementById("currentLocation");
   const temperatureElement = document.getElementById("temperature");
@@ -209,6 +238,8 @@ function displayVampireContent(data) {
     vampireAdvice.innerHTML = "🧛 Het is veilig. Tijd voor een snack!";
     vampireAdvice.style.color = "green";
   }
+
+  favoriteHeart();
 }
 
 function displaySurferContent(data) {
@@ -222,32 +253,6 @@ function displaySurferContent(data) {
   const windDirectionElement = document.getElementById("windDirection");
   const windDirectionArrowElement =
     document.getElementById("windDirectionArrow");
-  const addToFavoritesButton = document.getElementById("addToFavoritesButton");
-
-  const cloneButton = addToFavoritesButton.cloneNode(true);
-
-  addToFavoritesButton.parentNode.replaceChild(
-    cloneButton,
-    addToFavoritesButton
-  );
-
-  cloneButton.addEventListener("click", () => {
-    if (isFavorite(location)) {
-      removeFromFavorites(location);
-      favoriteIconElement.style.fill = "none";
-    } else {
-      addToFavorites(location);
-      favoriteIconElement.style.fill = "#fb2c36";
-    }
-  });
-
-  const favoriteIconElement = document.getElementById("favoriteIcon");
-
-  if (isFavorite(location)) {
-    favoriteIconElement.style.fill = "#fb2c36";
-  } else {
-    favoriteIconElement.style.fill = "none";
-  }
 
   currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
@@ -256,7 +261,11 @@ function displaySurferContent(data) {
   windSpeedElement.innerText = `${data.wind.speed} km/h`;
   windDirectionElement.innerText = `${data.wind.deg}°`;
   windDirectionArrowElement.style.transform = `rotate(${data.wind.deg}deg)`;
-}
+
+  favoriteHeart();
+};
+
+
 
 function displayGuardianContent(data) {
   const currentLocationElement = document.getElementById("currentLocation");
@@ -267,11 +276,13 @@ function displayGuardianContent(data) {
   const humidityElement = document.getElementById("humidity");
   const excpectedRainElement = document.getElementById("expectedRain");
 
-  currentLocation();
+  // currentLocation();
   currentLocationElement.innerHTML = `${data.name}, ${data.sys.country}`;
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
   weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
   weatherDescriptionElement.innerText = data.weather[0].description;
   excpectedRainElement.innerText = `${data.rain?.["1h"] || 0} mm`;
   humidityElement.innerText = `${data.main.humidity}%`;
-}
+
+  favoriteHeart();
+};
