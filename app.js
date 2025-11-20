@@ -140,7 +140,19 @@ function getFavoritesFromLocalStorage() {
 
 function addToFavorites(location) {
   const favorites = getFavoritesFromLocalStorage();
-  favorites.push(location);
+  const favoriteExists = favorites.some((fav) => fav.data.name == location.name);
+
+  if (favoriteExists){
+    return;
+  }
+  
+  const newFavorite = {
+    id: crypto.randomUUID(),
+    data: location,
+    createdAt: new Date().toISOString()
+  };
+
+  favorites.push(newFavorite);
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
