@@ -133,20 +133,6 @@ function userTypeNavigation(userType) {
   }
 }
 
-function currentLocation() {
-  const location = getLocationFromLocalStorage();
-  const currentLocationElement = document.getElementById("currentLocation"); // Heb de naam iets aangepast om verwarring te voorkomen
-
-  // IF: Check of location bestaat EN of er een naam in zit
-  if (location && location.name) {
-    currentLocationElement.innerHTML = `${location.name}`;
-  } else {
-    // ELSE: Error message of fallback
-    currentLocationElement.innerHTML = "Locatie onbekend";
-    console.warn("Geen locatie gevonden in local storage!");
-  }
-}
-
 function getFavoritesFromLocalStorage() {
   const favorites = JSON.parse(localStorage.getItem("favorites"));
   if (favorites) {
