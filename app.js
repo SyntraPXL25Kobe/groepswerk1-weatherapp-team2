@@ -79,20 +79,13 @@ function getWeather(cityName, userType) {
     });
 }
 
-function displayHomeContent(data) {
-  const location = { name: data.name };
-  console.log("Weer data ontvangen:", data);
-  const currentLocationElement = document.getElementById("currentLocation");
-  currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
-
-  const homeFavorites = document.getElementById("homeFavorites");
-  homeFavorites.innerHTML = "";
-  const favoritesStorage = getFavoritesFromLocalStorage();
-  favoritesStorage.forEach((favorite) => {
-    console.log(`Favorieten ${favorite.name}`);
-    homeFavorites.innerHTML += `<div class="p-4 rounded-2xl bg-[var(--bg-info)] backdrop-blur-md border border-white/20 shadow-sm cursor-pointer hover:bg-white/30 transition-colors flex justify-between items-center font-semibold">${favorite.name}</div>`;
-  });
-  favoriteHeart(location);
+function handleApiError(error) {
+  const locationTitle = document.getElementById("currentLocation");
+  if (error.message === "CITY_NOT_FOUND") {
+    locationTitle.innerText = "Stad niet gevonden 😕";
+  } else {
+    locationTitle.innerText = "Fout bij het ophalen van weerdata 😕";
+  }
 }
 
 function setupSearch(userType) {
