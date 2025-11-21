@@ -24,6 +24,25 @@ function init() {
 
   // 3. Weer ophalen (LET OP: aanhalingstekens om de stad!)
   getWeather(location.name, userType.value);
+
+  // 4. Favorieten Klik-systeem (Event Delegation)
+  const homeFavorites = document.getElementById("homeFavorites");
+  
+  homeFavorites.addEventListener("click", (e) => {
+    // Zoek naar het dichtstbijzijnde element met een data-city attribuut
+    const card = e.target.closest("[data-city]");
+    
+    if (card) {
+      const city = card.dataset.city; // Haal de stad uit de HTML
+      const currentUserType = document.getElementById("userType").value;
+      
+      console.log(`Klik op favoriet via delegation: ${city}`);
+      
+      // Update locatie en haal weer op
+      setLocationToLocalStorage({ name: city });
+      getWeather(city, currentUserType);
+    }
+  });
 }
 
 // --- LOCAL STORAGE FUNCTIES ---
@@ -209,7 +228,7 @@ function displayHomeContent(data) {
   const favoritesStorage = getFavoritesFromLocalStorage();
   favoritesStorage.forEach((favorite) => {
     console.log(`Favorieten ${favorite.name}`);
-    homeFavorites.innerHTML += `<div class="p-4 rounded-2xl bg-[var(--bg-info)] backdrop-blur-md border border-white/20 shadow-sm cursor-pointer hover:bg-white/30 transition-colors flex justify-between items-center font-semibold">${favorite.name}</div>`;
+    homeFavorites.innerHTML += `<div data-city="${favorite.name}" class="p-4 rounded-2xl bg-[var(--bg-info)] backdrop-blur-md border border-white/20 shadow-sm cursor-pointer hover:bg-white/30 transition-colors flex justify-between items-center font-semibold">${favorite.name}</div>`;
   });
 }
 
