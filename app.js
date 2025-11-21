@@ -267,9 +267,14 @@ function displaySurferContent(data) {
   baseContent(data);
 
   const windSpeedElement = document.getElementById("windSpeed");
+  const progressBar = document.getElementById("progressBar");
   const windDirectionElement = document.getElementById("windDirection");
   const windDirectionArrowElement =
     document.getElementById("windDirectionArrow");
+
+  const maxWindSpeed = 200;
+  const windPercentage = Math.min(data.wind.speed / maxWindSpeed);
+  progressBar.style.width = `${windPercentage * 100}%`;
 
   windSpeedElement.innerText = `${data.wind.speed} km/h`;
   windDirectionElement.innerText = `${data.wind.deg}°`;
