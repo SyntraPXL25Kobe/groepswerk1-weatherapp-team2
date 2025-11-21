@@ -46,12 +46,14 @@ function setLocationToLocalStorage(location) {
 
 function getWeather(cityName, userType) {
   const url = `${apiUrl}?q=${cityName}&appid=${apiKey}&units=metric`;
-  const locationTitle = document.getElementById("currentLocation");
 
   fetch(url)
     .then((res) => {
+      if (res.status === 404) {
+        throw new Error("CITY_NOT_FOUND");
+      }
       if (!res.ok) {
-        throw new Error(`Stad niet gevonden (${res.status})`);
+        throw new Error(`API_ERROR (${res.status})`);
       }
       return res.json();
     })
@@ -73,23 +75,25 @@ function getWeather(cityName, userType) {
     })
     .catch((err) => {
       console.error("Fout:", err);
-      locationTitle.innerText = "Stad niet gevonden 😕";
+      handleApiError(err);
     });
 }
 
 function displayHomeContent(data) {
-  baseContent(data);
-
+  const location = { name: data.name };
   console.log("Weer data ontvangen:", data);
+  const currentLocationElement = document.getElementById("currentLocation");
+  currentLocationElement.innerText = `${data.name}, ${data.sys.country}`;
 
   const homeFavorites = document.getElementById("homeFavorites");
   homeFavorites.innerHTML = "";
   const favoritesStorage = getFavoritesFromLocalStorage();
   favoritesStorage.forEach((favorite) => {
     console.log(`Favorieten ${favorite.name}`);
-    homeFavorites.innerHTML += `<div class="p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 shadow-sm cursor-pointer hover:bg-white/30 transition-colors flex justify-between items-center font-semibold">${favorite.name}</div>`;
+    homeFavorites.innerHTML += `<div class="p-4 rounded-2xl bg-[var(--bg-info)] backdrop-blur-md border border-white/20 shadow-sm cursor-pointer hover:bg-white/30 transition-colors flex justify-between items-center font-semibold">${favorite.name}</div>`;
   });
-};
+  favoriteHeart(location);
+}
 
 function setupSearch(userType) {
   const searchInput = document.getElementById("searchInput");
@@ -215,6 +219,19 @@ function baseContent(data) {
   temperatureElement.innerText = `${Math.round(data.main.temp)}°C`;
   weatherIconElement.style.backgroundImage = `url(${weatherIconUrl}${data.weather[0].icon}@4x.png)`;
   weatherDescriptionElement.innerText = data.weather[0].description;
+}
+
+function displayHomeContent(data) {
+  baseContent(data);
+  console.log("Weer data ontvangen:", data);
+
+  const homeFavorites = document.getElementById("homeFavorites");
+  homeFavorites.innerHTML = "";
+  const favoritesStorage = getFavoritesFromLocalStorage();
+  favoritesStorage.forEach((favorite) => {
+    console.log(`Favorieten ${favorite.name}`);
+    homeFavorites.innerHTML += `<div class="p-4 rounded-2xl bg-[var(--bg-info)] backdrop-blur-md border border-white/20 shadow-sm cursor-pointer hover:bg-white/30 transition-colors flex justify-between items-center font-semibold">${favorite.name}</div>`;
+  });
 }
 
 function displayVampireContent(data) {
