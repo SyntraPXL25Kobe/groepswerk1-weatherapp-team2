@@ -3,42 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Surfer Weather</title>
+    <title>Dracula's Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+      /* Custom animaties die Tailwind standaard niet heeft */
+      @keyframes flicker {
+        0% { opacity: 0.97; }
+        5% { opacity: 0.9; }
+        10% { opacity: 0.97; }
+        15% { opacity: 1; }
+        20% { opacity: 0.98; }
+        25% { opacity: 0.9; }
+        30% { opacity: 0.96; }
+        35% { opacity: 1; }
+        40% { opacity: 0.98; }
+        100% { opacity: 0.95; }
+      }
+      
+      .crt-flicker {
+        animation: flicker 4s infinite;
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        background-size: 100% 2px, 3px 100%;
+        z-index: 50;
+      }
+
+      /* Bloed-drup effect op inputs */
+      .blood-border:focus {
+        box-shadow: 0 0 15px #ef4444, inset 0 0 10px #7f1d1d;
+      }
+    </style>
   </head>
 
-  <body class="bg-[image:var(--vampire-gradient)] text-gray-800 min-h-screen">
-    <div class="max-w-3xl mx-auto p-6 space-y-6">
-      <header class="flex items-center justify-between">
-        <a class="text-sm text-white" href="/">&lt; BACK</a>
-        <select name="userType" id="userType">
-          <option value="Home">--Select a type--</option>
-          <option value="vampire" selected>Vampire</option>
-          <option value="guardian">Guardian</option>
-          <option value="surfer">Surfer</option>
+  <body class="bg-black text-red-100 min-h-screen font-['Share_Tech_Mono'] selection:bg-red-900 selection:text-white overflow-x-hidden">
+    
+    <div class="crt-flicker"></div>
+
+    <div class="max-w-3xl mx-auto p-6 space-y-8 relative z-10">
+      
+      <header class="flex items-center justify-between border-b-2 border-red-900 pb-4">
+        <a class="text-sm text-red-500 hover:text-red-300 hover:tracking-widest transition-all duration-500 uppercase" href="/">&lt; ESCAPE</a>
+        
+        <select name="userType" id="userType" class="bg-black border border-red-800 text-red-500 p-2 outline-none hover:bg-red-950 cursor-pointer font-['Creepster'] text-lg tracking-wider">
+          <option value="Home">👁️ The Eye</option>
+          <option value="vampire" selected>🧛 Vampire</option>
+          <option value="guardian">🛡️ Guardian</option>
+          <option value="surfer">🏄 Surfer</option>
         </select>
       </header>
-      <section class="bg-[var(--bg-info)] rounded-lg shadow p-4 space-y-4">
+
+      <section class="space-y-6">
+        
         <div
-          class="rounded-3xl shadow-xl p-5 space-y-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20"
+          class="relative p-6 space-y-4 bg-neutral-900/80 border-2 border-red-900 shadow-[0_0_30px_rgba(220,38,38,0.2)]"
         >
+          <div class="absolute -top-2 -left-2 w-4 h-4 bg-red-900 rotate-45"></div>
+          <div class="absolute -top-2 -right-2 w-4 h-4 bg-red-900 rotate-45"></div>
+          <div class="absolute -bottom-2 -left-2 w-4 h-4 bg-red-900 rotate-45"></div>
+          <div class="absolute -bottom-2 -right-2 w-4 h-4 bg-red-900 rotate-45"></div>
+
           <div class="flex items-start justify-between">
             <div>
-              <h1 class="text-2xl font-bold">Vampire</h1>
-              <p class="text-xs uppercase tracking-wide opacity-80"></p>
+              <h1 class="text-4xl text-red-600 font-['Nosifer'] drop-shadow-[0_0_5px_rgba(255,0,0,0.8)]">NOSFERATU</h1>
+              <p class="text-xs uppercase tracking-[0.3em] text-red-400 mt-2 opacity-60">Bloodline: Ancient</p>
             </div>
-
-            <div class="text-4xl">🧛</div>
+            <div class="text-5xl animate-pulse grayscale hover:grayscale-0 transition-all duration-700 cursor-help">⚰️</div>
           </div>
 
-          <div class="space-y-1">
-            <p class="text-xs opacity-80">Location</p>
-            <div class="flex items-center gap-2">
-              <p class="text-lg font-semibold" id="currentLocation"></p>
+          <div class="space-y-1 border-l-4 border-red-800 pl-4 my-6">
+            <p class="text-xs text-red-500 uppercase">Current Lair</p>
+            <div class="flex items-center gap-3">
+              <p class="text-2xl text-white font-bold tracking-widest" id="currentLocation">TRANSYLVANIA</p>
               <button
                 id="addToFavoritesButton"
-                class="cursor-pointer hover:*:fill-red-500"
+                class="group cursor-crosshair"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +97,7 @@
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="lucide lucide-heart-icon lucide-heart"
+                  class="text-red-800 group-hover:fill-red-600 group-hover:text-red-600 transition-colors duration-300"
                   id="favoriteIcon"
                 >
                   <path
@@ -61,82 +108,93 @@
             </div>
           </div>
 
-          <div class="pt-1">
-            <div class="relative">
+          <div class="pt-2">
+            <div class="relative group">
               <input
                 id="searchInput"
                 type="text"
-                placeholder="Search location"
-                class="w-full rounded-full px-4 py-2 text-sm text-gray-900 bg-white/90 border border-white/40"
+                placeholder="Scry for location..."
+                class="w-full bg-black border-b border-red-900 px-4 py-3 text-red-100 placeholder-red-900 focus:outline-none focus:border-red-500 transition-colors blood-border font-['Creepster'] tracking-wider text-xl"
               />
               <button
-                class="absolute right-2 top-[7px] px-4 py-1 text-xs rounded-full bg-red-600 text-white font-semibold hover:bg-red-400 cursor-pointer"
+                class="absolute right-0 top-2 px-6 py-1 text-sm bg-red-900 text-black font-bold hover:bg-red-600 hover:text-white transition-all duration-300 border border-red-950"
                 id="searchButton"
               >
-                Search
+                SUMMON
               </button>
             </div>
           </div>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-3 text-sm">
+        <div class="grid md:grid-cols-2 gap-6 text-sm">
+          
           <article
-            class="rounded-2xl p-5 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 md:col-span-2"
+            class="p-6 bg-black border border-red-900/50 md:col-span-2 hover:border-red-600 transition-colors duration-500 group relative overflow-hidden"
           >
-            <p class="text-xs uppercase tracking-wide opacity-80 mb-3">
-              Temperature & Conditions
-            </p>
-            <div class="flex items-center justify-between">
-              <div class="space-y-2">
-                <p class="text-5xl font-bold" id="temperature"></p>
-                <p
-                  class="italic text-base opacity-90"
-                  id="weatherDescription"
-                ></p>
-              </div>
-              <div id="weatherIcon" class="bg-contain w-24 h-24"></div>
-            </div>
-          </article>
-          <article
-            class="rounded-2xl p-5 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-3"
-          >
-            <div class="flex items-center justify-between">
-              <p class="text-xs uppercase tracking-wide opacity-80">
-                Sunlight Danger
-              </p>
-              <span class="text-2xl">☀️</span>
-            </div>
-            <div class="flex justify-start items-center gap-2">
-              <p class="font-bold italic opacity-70">Current Time:</p>
-              <p id="localTime" class="italic opacity-70"></p>
-            </div>
-            <div class="flex justify-between items-center">
-                <div class="flex flex-col gap-2 items-start justify-center">
-                  <p class="text-3xl font-bold">Sunrise</p>
-                  <p class="text-2xl opacity-70" id="sunriseHour"></p>
-                </div>
-                <div class="flex flex-col gap-2 items-end justify-center">
-                  <p class="text-3xl font-bold">Sunset</p>
-                  <p class="text-2xl opacity-70" id="sunsetHour"></p>
-              </div>
-            </div>
+             <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-red-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             
-            <p class="text-xs opacity-70">Stay insinde while the sun is out</p>
+            <p class="text-xs uppercase tracking-widest text-red-500 mb-3 font-bold">
+              Atmosphere
+            </p>
+            <div class="flex items-center justify-between relative z-10">
+              <div class="space-y-2">
+                <p class="text-6xl font-['Creepster'] text-white" id="temperature">6°C</p>
+                <p
+                  class="text-lg text-red-400 uppercase tracking-widest"
+                  id="weatherDescription"
+                >Eternal Fog</p>
+              </div>
+              <div id="weatherIcon" class="w-24 h-24 flex items-center justify-center text-6xl opacity-80 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">🦇</div>
+            </div>
           </article>
 
           <article
-            class="rounded-2xl p-5 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-3"
+            class="p-6 bg-black border border-red-900/50 space-y-4 hover:bg-red-950/20 transition-colors"
           >
-            <div class="flex items-center justify-between">
-              <p class="text-xs uppercase tracking-wide opacity-80">
-                Vampire sunlight advice
+            <div class="flex items-center justify-between border-b border-red-900/30 pb-2">
+              <p class="text-xs uppercase tracking-widest text-red-500 font-bold">
+                Solar Threat
               </p>
-              <span class="text-2xl">ℹ</span>
+              <span class="text-2xl animate-[spin_10s_linear_infinite] opacity-50">☀️</span>
             </div>
-            <div class="flex items-center gap-4">
-              <p class="font-bold" id="vampireAdvice"></p>
+            
+            <div class="flex justify-start items-center gap-2">
+              <p class="text-red-700 uppercase text-xs">Local Crypt Time:</p>
+              <p id="localTime" class="text-white font-bold font-['Share_Tech_Mono']"></p>
             </div>
-            <!-- <p class="text-xs opacity-70">Offshore winds are ideal</p> -->
+            
+            <div class="flex justify-between items-center pt-2">
+                <div class="flex flex-col gap-1 items-start justify-center">
+                  <p class="text-xl text-red-500 font-['Creepster']">Sunrise</p>
+                  <p class="text-2xl text-white" id="sunriseHour">--:--</p>
+                </div>
+                <div class="h-10 w-[1px] bg-red-900/50"></div>
+                <div class="flex flex-col gap-1 items-end justify-center">
+                  <p class="text-xl text-indigo-400 font-['Creepster']">Sunset</p>
+                  <p class="text-2xl text-white" id="sunsetHour">--:--</p>
+              </div>
+            </div>
+            
+            <p class="text-xs text-center text-red-600 mt-2 font-bold uppercase animate-pulse">
+              ⚠️ Skin combustion imminent
+            </p>
+          </article>
+
+          <article
+            class="p-6 bg-red-950/30 border border-red-900/50 space-y-3 relative overflow-hidden"
+          >
+            <div class="absolute -right-4 -bottom-4 text-9xl opacity-5 select-none pointer-events-none">🩸</div>
+            <div class="flex items-center justify-between">
+              <p class="text-xs uppercase tracking-widest text-red-500 font-bold">
+                Survival Guide
+              </p>
+              <span class="text-xl text-red-500">ℹ</span>
+            </div>
+            <div class="flex items-center gap-4 relative z-10">
+              <p class="text-lg font-['Creepster'] text-white leading-relaxed tracking-wide" id="vampireAdvice">
+                Seek shadows. The burning orb is watching.
+              </p>
+            </div>
           </article>
         </div>
       </section>

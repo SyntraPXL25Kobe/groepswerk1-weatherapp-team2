@@ -1,135 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guardian Weather</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="/styles.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Garden Guardian</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
-    <body class="bg-[image:var(--guardian-gradient)] text-gray-800 min-h-screen">
-    <div class="max-w-3xl mx-auto p-6 space-y-6 ">
-      <header class="flex items-center justify-between">
-        <a class="text-sm text-blue-600" href="/">&lt; BACK</a>
-        <select name="userType" id="userType">
-          <option value="Home">--Select a type--</option>
-          <option value="vampire">Vampire</option>
-          <option value="guardian" selected>Guardian</option>
-          <option value="surfer">Surfer</option>
+    <style>
+      /* Notebook papier effect voor de achtergrond */
+      .notebook-bg {
+        background-color: #f5f5f0;
+        background-image: 
+          linear-gradient(#e5e7eb 1px, transparent 1px),
+          linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+      
+      /* Zachte schaduw die lijkt op papier dat op tafel ligt */
+      .paper-shadow {
+        box-shadow: 2px 3px 10px rgba(0,0,0,0.05);
+      }
+    </style>
+  </head>
+
+  <body class="notebook-bg text-stone-800 min-h-screen font-['Lora']">
+    
+    <div class="max-w-3xl mx-auto p-6 space-y-6">
+      
+      <header class="flex items-center justify-between border-b-2 border-stone-300 pb-4">
+        <a class="text-sm font-bold text-emerald-700 hover:text-emerald-500 hover:underline decoration-wavy decoration-1" href="/">&lt; BACK TO SHORE</a>
+        
+        <select name="userType" id="userType" class="bg-amber-100 border-2 border-amber-200 text-amber-900 font-bold py-1 px-4 rounded-lg outline-none cursor-pointer hover:bg-amber-50 transition-colors shadow-sm text-sm">
+          <option value="Home">👁️ The Eye</option>
+          <option value="vampire">🧛 Vampire</option>
+          <option value="guardian" selected>🌱 Guardian</option>
+          <option value="surfer">🏄 Surfer</option>
         </select>
       </header>
-      <section class="bg-[var(--bg-info)] rounded-lg shadow p-4 space-y-4">
 
-         <!-- main card -->
-        <div class="rounded-3xl shadow-xl p-5 space-y-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20">
-            <!-- title + icon -->
+      <section class="space-y-6">
+
+         <div class="rounded-xl p-6 space-y-5 bg-[#fffcf5] border border-stone-200 paper-shadow relative overflow-hidden">
+            
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-4 bg-emerald-100/50 rotate-1 backdrop-blur-sm"></div>
+
             <div class="flex items-start justify-between">
                 <div>
-                <h1 class="text-2xl font-bold">Guardian Tomato</h1>
-                <p class="text-xs uppercase tracking-wide opacity-80">
-                    Protect your plants
+                    <h1 class="text-3xl font-bold text-emerald-900 italic">The Tomato Guardian</h1>
+                    <p class="text-xs font-bold text-stone-500 uppercase tracking-widest mt-1">
+                        Botanical Log #2024
+                    </p>
+                </div>
+                <div class="text-5xl drop-shadow-sm transform rotate-12">🍅</div>
+            </div>
+
+            <div class="space-y-1 border-l-4 border-emerald-200 pl-4">
+                <p class="text-xs text-stone-500 italic">Field Location</p>
+                <div class="flex items-center gap-3">
+                    <p class="text-xl font-semibold text-stone-800" id="currentLocation"></p>
+                    <button
+                        id="addToFavoritesButton"
+                        class="cursor-pointer hover:scale-110 transition-transform group"
+                    >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="text-stone-400 group-hover:fill-red-400 group-hover:text-red-400 transition-colors"
+                        id="favoriteIcon"
+                    >
+                        <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+                    </svg>
+                  </button>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <div class="relative flex items-center">
+                    <input
+                        id="searchInput"
+                        type="text"
+                        placeholder="Find new garden..."
+                        class="w-full bg-transparent border-b-2 border-stone-300 px-2 py-2 text-stone-700 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition-colors font-['Caveat'] text-xl"
+                    />
+                    <button
+                        class="ml-2 px-4 py-2 text-xs rounded-md bg-emerald-700 text-emerald-50 font-bold uppercase tracking-wide hover:bg-emerald-800 transition-colors shadow-sm"
+                        id="searchButton"
+                    >
+                    Scout
+                  </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 text-sm">
+
+            <article
+                class="rounded-lg p-5 bg-white border-2 border-stone-100 paper-shadow flex flex-col justify-between relative group hover:border-orange-200 transition-colors"
+            >   
+                <div class="absolute -top-3 left-4 bg-white px-2 text-xs font-bold text-orange-400 border border-orange-100 rounded shadow-sm">Condition</div>
+                
+                <div class="flex justify-between items-center mt-2">
+                    <div>
+                       <p class="text-4xl font-bold text-stone-800" id="temperature"></p>
+                       <p class="italic text-stone-500 font-['Caveat'] text-xl" id="weatherDescription"></p>
+                    </div>
+                    <div id="weatherIcon" class="bg-contain w-16 h-16 opacity-90 grayscale-[20%] group-hover:grayscale-0 transition-all"></div>
+                </div>
+            </article>
+
+            <article
+                class="rounded-lg p-5 bg-white border-2 border-stone-100 paper-shadow space-y-2 hover:border-blue-200 transition-colors relative"
+            >
+                <div class="absolute -top-3 left-4 bg-white px-2 text-xs font-bold text-blue-400 border border-blue-100 rounded shadow-sm">Moisture</div>
+                
+                <div class="flex items-center gap-3 mt-2">
+                    <span class="text-3xl">💧</span>
+                    <div>
+                        <p class="text-xs text-stone-400 uppercase">Relative Humidity</p>
+                        <p class="text-2xl font-bold text-stone-700" id=humidity></p>
+                    </div>
+                </div>
+            </article>
+
+            <article
+                class="rounded-lg p-5 bg-white border-2 border-stone-100 paper-shadow space-y-2 hover:border-blue-200 transition-colors relative"
+            >
+                 <div class="absolute -top-3 left-4 bg-white px-2 text-xs font-bold text-blue-400 border border-blue-100 rounded shadow-sm">Precipitation</div>
+                 
+                 <div class="flex items-center gap-3 mt-2">
+                    <span class="text-3xl">🌧️</span>
+                    <div>
+                        <p class="text-xs text-stone-400 uppercase">Next Hour</p>
+                        <p class="text-2xl font-bold text-stone-700" id="expectedRain"></p>
+                    </div>
+                </div>
+            </article>
+
+
+            <div class="rounded-lg p-5 bg-[#fff9c4] shadow-md rotate-1 border border-yellow-200/50 relative">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-red-400 shadow-sm border border-red-500 z-10"></div>
+                
+                <p class="text-xs uppercase tracking-wide text-yellow-800/60 font-bold mb-1">
+                    Gardener's Note
                 </p>
-                </div>
-
-                <div class="text-4xl">🥫</div>
+                <p class="text-2xl font-['Caveat'] text-stone-800 leading-snug" id="guardianAdvice">
+                    Check for blight if humidity rises.
+                </p>
             </div>
 
-            <!-- location block -->
-            <div class="space-y-1">
-                <p class="text-xs opacity-80">Location</p>
-                <div class="flex items-center gap-2">
-                <p class="text-lg font-semibold" id="currentLocation"></p>
-                <button
-                id="addToFavoritesButton"
-                class="cursor-pointer hover:*:fill-red-500"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-heart-icon lucide-heart"
-                  id="favoriteIcon"
-                >
-                  <path
-                    d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"
-                  />
-                </svg>
-              </button>
-                </div>
-            </div>
-
-            <!-- search bar -->
-            <div class="pt-1">
-                <div class="relative">
-                <input
-                    id="searchInput"
-                    type="text"
-                    placeholder="Search location"
-                    class="w-full rounded-full px-4 py-2 text-sm text-gray-900 bg-white/90 border border-white/40"
-                />
-                <button
-                    class="absolute right-2 top-[7px] px-4 py-1 text-xs rounded-full bg-lime-600 text-white font-semibold hover:bg-lime-400 cursor-pointer"
-                    id="searchButton"
-                >
-                Search
-              </button>
-                </div>
-            </div>
         </div>
-
-        <!-- INFO BOXES -->
-        <div class="grid md:grid-cols-2 gap-3 text-sm">
-
-            <!-- expected rain -->
-            <article
-                class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1"
-            >
-                <p class="text-xs opacity-80">Temperature</p>
-                <div>
-                   <p class="text-2xl font-bold" id="temperature"></p>
-                   <div id="weatherIcon" class="bg-contain w-20 h-20"></div>
-                </div>
-             <p class="italic text-sm" id="weatherDescription"></p>
-            </article>
-
-            <!-- humidity -->
-            <article
-                class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1"
-            >
-                <p class="text-xs opacity-80">Humidity</p>
-                <p class="text-2xl font-bold" id=humidity></p>
-            </article>
-
-            <!-- Expected rain in 1 hour -->
-            <article
-                class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-1"
-            >
-                <p class="text-xs opacity-80">Expected rain</p>
-                <p class="text-2xl font-bold" id="expectedRain"></p>
-            </article>
-
-
-          <!-- advice -->
-            <div class="rounded-2xl p-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 text-sm">
-            <p class="text-xs uppercase tracking-wide opacity-80 mb-1">
-                Guardian Advice
-            </p>
-            <p class="leading-snug">
-          
-            </p>
-        </div>
-
-        
       </section>
-
-
   </div>
   <script src="/app.js"></script>
 </body>

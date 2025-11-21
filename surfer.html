@@ -3,54 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Surfer Weather</title>
+    <title>Surf's Up Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="/styles.css" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      /* Een subtiele golf-animatie voor de achtergrond */
+      @keyframes wave {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      
+      .ocean-gradient {
+        background: linear-gradient(-45deg, #22d3ee, #0ea5e9, #2563eb, #38bdf8);
+        background-size: 400% 400%;
+        animation: wave 15s ease infinite;
+      }
+
+      /* Zorgt ervoor dat de scrollbar niet de vibe verpest */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+      }
+    </style>
   </head>
 
-  <body class="bg-[image:var(--surfer-gradient)] text-gray-800 min-h-screen">
+  <body class="ocean-gradient text-slate-800 min-h-screen font-['Quicksand'] selection:bg-yellow-300 selection:text-blue-900">
+    
     <div class="max-w-3xl mx-auto p-6 space-y-6">
+      
       <header class="flex items-center justify-between">
-        <a class="text-sm text-blue-600" href="/">&lt; BACK</a>
-        <select name="userType" id="userType">
-          <option value="Home">--Select a type--</option>
-          <option value="vampire">Vampire</option>
-          <option value="guardian">Guardian</option>
-          <option value="surfer" selected>Surfer</option>
+        <a class="text-sm text-white font-bold tracking-wider hover:text-yellow-300 transition-colors drop-shadow-md" href="/">&lt; BACK TO SHORE</a>
+        
+        <select name="userType" id="userType" class="appearance-none bg-white/20 backdrop-blur-md border-2 border-white/40 text-white font-bold py-2 px-6 rounded-full outline-none cursor-pointer hover:bg-white/30 transition-all text-center">
+          <option value="Home" class="text-slate-800">👁️ The Eye</option>
+          <option value="vampire" class="text-slate-800">🧛 Vampire</option>
+          <option value="guardian" class="text-slate-800">🛡️ Guardian</option>
+          <option value="surfer" selected class="text-slate-800">🏄 Surfer</option>
         </select>
       </header>
-      <section class="bg-[var(--bg-info)] rounded-lg shadow p-4 space-y-4">
-        <div
-          class="rounded-3xl shadow-xl p-5 space-y-4 bg-[var(--bg-info)] backdrop-blur-md border border-white/20"
-        >
-          <div class="flex items-start justify-between">
-            <div>
-              <h1 class="text-2xl font-bold">Surfer</h1>
-              <p class="text-xs uppercase tracking-wide opacity-80"></p>
-            </div>
 
-            <div class="text-4xl">🏄‍♂️</div>
+      <section class="space-y-4">
+        
+        <div
+          class="rounded-[2.5rem] shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] p-6 space-y-4 bg-white/20 backdrop-blur-xl border border-white/40 relative overflow-hidden group"
+        >
+          <div class="absolute -right-10 -top-10 w-40 h-40 bg-yellow-300/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+
+          <div class="flex items-start justify-between relative z-10">
+            <div>
+              <h1 class="text-3xl font-['Permanent_Marker'] text-white drop-shadow-md tracking-wide transform -rotate-1">DAWN PATROL</h1>
+              <p class="text-xs font-bold text-blue-100 uppercase tracking-widest mt-1 ml-1">Current Spot</p>
+            </div>
+            <div class="text-5xl drop-shadow-lg transform group-hover:rotate-12 transition-transform duration-300">🤙</div>
           </div>
 
-          <div class="space-y-1">
-            <p class="text-xs opacity-80">Location</p>
-            <div class="flex items-center gap-2">
-              <p class="text-lg font-semibold" id="currentLocation"></p>
+          <div class="space-y-1 pl-2">
+            <div class="flex items-center gap-3">
+              <p class="text-4xl font-bold text-white tracking-tight drop-shadow-sm" id="currentLocation">California</p>
               <button
                 id="addToFavoritesButton"
-                class="cursor-pointer hover:*:fill-red-500"
+                class="cursor-pointer transition-transform active:scale-90 hover:scale-110"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
+                  width="28"
+                  height="28"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
+                  stroke-width="3"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="lucide lucide-heart-icon lucide-heart"
+                  class="text-white hover:fill-yellow-400 hover:text-yellow-400 transition-colors shadow-sm"
                   id="favoriteIcon"
                 >
                   <path
@@ -61,84 +96,93 @@
             </div>
           </div>
 
-          <div class="pt-1">
-            <div class="relative">
+          <div class="pt-2 relative z-10">
+            <div class="relative shadow-lg rounded-full">
               <input
                 id="searchInput"
                 type="text"
-                placeholder="Search location"
-                class="w-full rounded-full px-4 py-2 text-sm text-gray-900 bg-white/90 border border-white/40"
+                placeholder="Find your wave..."
+                class="w-full rounded-full pl-6 pr-24 py-3 text-blue-900 bg-white/80 border-2 border-transparent focus:border-yellow-300 focus:outline-none transition-all font-semibold placeholder-blue-300"
               />
               <button
-                class="absolute right-2 top-[7px] px-4 py-1 text-xs rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-400 cursor-pointer"
+                class="absolute right-1 top-1 bottom-1 px-6 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all transform"
                 id="searchButton"
               >
-                Search
+                GO
               </button>
             </div>
           </div>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-3 text-sm">
+        <div class="grid md:grid-cols-2 gap-4 text-sm">
+          
           <article
-            class="rounded-2xl p-5 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 md:col-span-2"
+            class="rounded-[2rem] p-6 bg-white/60 backdrop-blur-md border border-white/50 md:col-span-2 shadow-sm hover:shadow-md transition-shadow"
           >
-            <p class="text-xs uppercase tracking-wide opacity-80 mb-3">
-              Temperature & Conditions
+            <p class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-2">
+              Conditions
             </p>
             <div class="flex items-center justify-between">
-              <div class="space-y-2">
-                <p class="text-5xl font-bold" id="temperature"></p>
+              <div class="space-y-1">
+                <p class="text-6xl font-bold text-slate-800 tracking-tighter" id="temperature">24°</p>
                 <p
-                  class="italic text-base opacity-90"
+                  class="text-xl font-['Permanent_Marker'] text-blue-500 rotate-[-2deg]"
                   id="weatherDescription"
-                ></p>
+                >Totally Tubulur</p>
               </div>
-              <div id="weatherIcon" class="bg-contain w-24 h-24"></div>
+              <div id="weatherIcon" class="bg-contain w-24 h-24 drop-shadow-xl">☀️</div>
             </div>
-          </article>
-          <article
-            class="rounded-2xl p-5 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-3"
-          >
-            <div class="flex items-center justify-between">
-              <p class="text-xs uppercase tracking-wide opacity-80">
-                Wind Speed
-              </p>
-              <span class="text-2xl">💨</span>
-            </div>
-            <p class="text-3xl font-bold" id="windSpeed"></p>
-            <p class="text-xs opacity-70">Perfect for surfing: 15-25 km/h</p>
           </article>
 
           <article
-            class="rounded-2xl p-5 bg-[var(--bg-info)] backdrop-blur-md border border-white/20 space-y-3"
+            class="rounded-[2rem] p-6 bg-gradient-to-br from-blue-50 to-white backdrop-blur-md border border-white/50 shadow-sm hover:-translate-y-1 transition-transform duration-300"
           >
-            <div class="flex items-center justify-between">
-              <p class="text-xs uppercase tracking-wide opacity-80">
-                Wind Direction
+            <div class="flex items-center justify-between mb-4">
+              <p class="text-xs font-bold text-blue-400 uppercase tracking-widest">
+                Wind Power
+              </p>
+              <span class="text-2xl">💨</span>
+            </div>
+            <p class="text-4xl font-bold text-slate-700" id="windSpeed">12 km/h</p>
+            <div class="mt-4 bg-blue-100 rounded-full h-2 w-full overflow-hidden">
+                <div class="bg-blue-400 h-full w-2/3 rounded-full"></div>
+            </div>
+            <p class="text-xs font-semibold text-blue-400 mt-2">Ideal range: 15-25 km/h</p>
+          </article>
+
+          <article
+            class="rounded-[2rem] p-6 bg-gradient-to-br from-blue-50 to-white backdrop-blur-md border border-white/50 shadow-sm hover:-translate-y-1 transition-transform duration-300"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-xs font-bold text-blue-400 uppercase tracking-widest">
+                Direction
               </p>
               <span class="text-2xl">🧭</span>
             </div>
-            <div class="flex items-center gap-4">
-              <p class="text-3xl font-bold" id="windDirection"></p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="48"
-                height="48"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-move-up opacity-80"
-                id="windDirectionArrow"
-              >
-                <path d="M8 6L12 2L16 6" />
-                <path d="M12 2V22" />
-              </svg>
+            
+            <div class="flex flex-col items-center justify-center py-2">
+                <div class="relative flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-2 border-2 border-blue-200">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="text-blue-600 transform transition-transform duration-700"
+                        id="windDirectionArrow"
+                        style="transform: rotate(45deg);" 
+                    >
+                        <path d="M12 19V5" />
+                        <path d="M5 12l7-7 7 7" />
+                    </svg>
+                </div>
+                <p class="text-2xl font-bold text-slate-700" id="windDirection">NE</p>
             </div>
-            <p class="text-xs opacity-70">Offshore winds are ideal</p>
+            <p class="text-xs font-bold text-center text-green-500 bg-green-100 py-1 px-2 rounded-full mx-auto w-max">Offshore is Best</p>
           </article>
         </div>
       </section>
