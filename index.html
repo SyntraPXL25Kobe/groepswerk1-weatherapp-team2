@@ -11,7 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
 
     <style>
-      /* Subtiel grid patroon voor een technische/kaart achtergrond */
+      /* BELANGRIJK: Dit zorgt dat de favorieten uit je app.js donker zijn */
+      :root {
+        --bg-info: rgba(28, 25, 23, 0.7); /* stone-900 met transparantie */
+      }
+
+      /* Subtiel grid patroon */
       .conspiracy-bg {
         background-color: #0c0a09;
         background-image: 
@@ -20,7 +25,7 @@
         background-size: 30px 30px;
       }
 
-      /* "Redacted" effect: Zwarte balk die tekst verbergt tot hover */
+      /* "Redacted" effect */
       .redacted {
         background-color: currentColor;
         color: currentColor;
@@ -29,7 +34,7 @@
       }
       .redacted:hover {
         background-color: transparent;
-        color: #fbbf24; /* Amber-400 */
+        color: #fbbf24; 
       }
 
       /* Draaiende driehoek animatie */
@@ -74,14 +79,14 @@
             <p class="text-xs tracking-[0.5em] text-amber-700 uppercase">Weather Control System</p>
         </div>
 
-        <div class="bg-stone-900/80 border border-amber-800/50 p-6 backdrop-blur-sm relative overflow-hidden group">
+        <div class="bg-stone-900/80 border border-amber-800/50 p-6 backdrop-blur-sm relative overflow-hidden group shadow-[0_0_30px_rgba(251,191,36,0.05)]">
             <div class="absolute top-0 left-0 w-full h-1 bg-amber-500/20 shadow-[0_0_15px_rgba(251,191,36,0.5)] animate-[pulse_3s_ease-in-out_infinite]"></div>
             
             <div class="space-y-2 mb-6">
                 <div class="flex justify-between items-end border-b border-amber-900 pb-2">
                     <div>
                         <p class="text-xs text-amber-700 uppercase mb-1">Target Coordinates</p>
-                        <p class="text-2xl font-bold text-amber-100 tracking-widest" id="currentLocation"></p>
+                        <p class="text-2xl font-bold text-amber-100 tracking-widest font-['Cinzel']" id="currentLocation">Locating...</p>
                     </div>
                     <button
                         id="addToFavoritesButton"
@@ -128,12 +133,35 @@
                 <h3 class="font-['Cinzel'] font-bold text-amber-700 uppercase tracking-widest text-sm">Active Surveillance</h3>
                 <div class="h-[1px] flex-1 bg-amber-900/50"></div>
             </div>
+
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                
+                <article
+                  class="p-6 bg-black/60 border border-amber-900/50 md:col-span-2 hover:border-amber-600 transition-colors duration-500 group relative overflow-hidden"
+                >
+                  <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-amber-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  
+                  <p class="text-xs uppercase tracking-widest text-amber-600 mb-3 font-bold">
+                    Atmospheric Conditions
+                  </p>
+                  <div class="flex items-center justify-between relative z-10">
+                    <div class="space-y-2">
+                      <p class="text-6xl font-['Cinzel'] text-amber-100" id="temperature">--</p>
+                      <p
+                        class="text-lg text-amber-500 uppercase tracking-widest font-bold"
+                        id="weatherDescription"
+                      >--</p>
+                    </div>
+                    <div id="weatherIcon" class="w-24 h-24 bg-contain bg-center bg-no-repeat opacity-80 grayscale sepia invert"></div>
+                  </div>
+                </article>
+            </div>
             
             <div id="homeFavorites" class="flex flex-col gap-3 w-full">
               </div>
             
-            <div class="opacity-40 text-xs text-center border border-dashed border-amber-900 p-4">
-                WAITING FOR TARGET ACQUISITION...
+            <div class="opacity-40 text-[10px] text-center border border-dashed border-amber-900 p-2 text-amber-700 font-mono">
+                // END OF STREAM //
             </div>
         </div>
       </section>
